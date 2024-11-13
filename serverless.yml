@@ -1,0 +1,36 @@
+service: discord-rss-bot-test
+frameworkVersion: "4"
+
+plugins:
+  - serverless-python-requirements
+
+provider:
+  name: aws
+  runtime: python3.12
+  memorySize: 512
+  architecture: x86_64
+  region: ap-northeast-1
+  timeout: 30
+  apiGateway:
+    binaryMediaTypes:
+      - "*/*"
+  ecr:
+    images:
+      discord-rss-bot-test:
+        path: ./
+        platform: linux/amd64
+
+functions:
+  app:
+    events:
+      - eventBridge:
+          schedule: cron(25 13 * * ? *)
+          input:
+            bot_name: developer
+    image:
+      name: discord-rss-bot-test
+      command:
+        - app.main.handler
+
+package:
+  individually: true
