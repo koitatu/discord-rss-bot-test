@@ -19,17 +19,6 @@ Discord RSS Bot origin by [lambda-discord-rss-bot](https://github.com/mk668a/lam
 - **EventBridge スケジュール変更**  
   Cron式を日本時間23:35実行に変更
 
-### フォルダ名を変更した場合の対応
-
-プロジェクトディレクトリ名を変更すると、`node_modules` 内のパスがずれてプラグインやライブラリが読み込めなくなることがあります。  
-その場合は以下の手順で依存関係を再インストールしてください。
-
-- 古い依存関係を削除  
-`rm -rf node_modules package-lock.json`
-
-- 依存関係を再インストール  
-`npm install`
-
 
 ## セットアップ手順
 ### 1. Discord Webhook URL の設定
@@ -107,7 +96,7 @@ for /f "delims=" %%A in ('aws sts get-caller-identity --query Account --output t
 
 ### 6. Serverless Framework でデプロイ
 
-1. 環境変数をエクスポート  
+1. 環境変数をエクスポート  # 通常不要のはず。
 ```
 export GOOGLE_AI_STUDIO_API_KEY="your_google_api_key_here"
 ```
@@ -116,6 +105,16 @@ export GOOGLE_AI_STUDIO_API_KEY="your_google_api_key_here"
 ```
 sls deploy --stage dev
 ```
+
+### フォルダ名を変更した場合の対応
+プロジェクトディレクトリ名を変更すると、`node_modules` 内のパスがずれてプラグインやライブラリが読み込めなくなることがあります。  
+その場合は以下の手順で依存関係を再インストールしてください。
+
+- 古い依存関係を削除  
+`rm -rf node_modules package-lock.json`
+
+- 依存関係を再インストール  
+`npm install`
 
 ### 7. 動作確認
 
