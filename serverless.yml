@@ -1,4 +1,4 @@
-service: discord-rss-bot-test222
+service: discord-rss-bot-test
 frameworkVersion: "4"
 
 plugins:
