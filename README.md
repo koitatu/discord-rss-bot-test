@@ -1,11 +1,20 @@
 # 概要
 
-Discord RSS Bot origin by [lambda-discord-rss-bot](https://github.com/mk668a/lambda-discord-rss-bot)
+Discord RSS Bot origin from [lambda-discord-rss-bot](https://github.com/mk668a/lambda-discord-rss-bot)
 
 ***Acknowledgments:***  
 *This project is based on* [lambda-discord-rss-bot](https://github.com/mk668a/lambda-discord-rss-bot) *by mk668a.*
 
-## 主な改良点
+- node.js v24.7.0で動作確認。  
+```
+node -v
+v24.7.0
+```
+
+- "serverless-dotenv-plugin" で.envを自動的に読み込むように修正。
+
+
+## 主な修正点
 
 - **Gemini API のエラーハンドリング追加**  
   レスポンスが `None` やエラーを返す場合の処理を実装
@@ -19,6 +28,18 @@ Discord RSS Bot origin by [lambda-discord-rss-bot](https://github.com/mk668a/lam
 - **EventBridge スケジュール変更**  
   Cron式を日本時間23:35実行に変更
 
+- **add ignore dir**
+- node_modules/
+
+## ディレクトリ名を変更した場合の対応
+プロジェクトディレクトリ名を変更すると、`node_modules` 内のパスがずれてプラグインやライブラリが読み込めなくなることがあります。  
+その場合は以下の手順で依存関係を再インストールしてください。
+
+- 古い依存関係を削除  
+`rm -rf node_modules package-lock.json`
+
+- 依存関係を再インストール  
+`npm install`
 
 ## セットアップ手順
 ### 1. Discord Webhook URL の設定
@@ -29,7 +50,9 @@ Discord RSS Bot origin by [lambda-discord-rss-bot](https://github.com/mk668a/lam
 1. `app/.env.sample`をコピーして、`app/.env` ファイルの`GOOGLE_AI_STUDIO_API_KEY`を自身のAPI_KEYへ書き換える。
 2. `serverless-dotenv-plugin` をインストール  
 ```
-npm install --save-dev serverless-dotenv-plugin
+cd discord-rss-bot-test
+npm install 
+# npm install --save-dev serverless-dotenv-plugin # package.jsonに書いてあるので不要のはず。
 ```
 
 ### 3. Python 環境の構築（ローカルテスト用・任意）
@@ -43,7 +66,6 @@ pip install -r requirements.txt
 
 ### 4. Docker イメージのビルド
 ```
-cd lambda-discord-rss-bot
 docker build --platform linux/amd64 -t discord-rss-bot-test . # AppleSiliconの場合は必須。IntelArchでも動く。
 ```
 
@@ -105,16 +127,6 @@ export GOOGLE_AI_STUDIO_API_KEY="your_google_api_key_here"
 ```
 sls deploy --stage dev
 ```
-
-### フォルダ名を変更した場合の対応
-プロジェクトディレクトリ名を変更すると、`node_modules` 内のパスがずれてプラグインやライブラリが読み込めなくなることがあります。  
-その場合は以下の手順で依存関係を再インストールしてください。
-
-- 古い依存関係を削除  
-`rm -rf node_modules package-lock.json`
-
-- 依存関係を再インストール  
-`npm install`
 
 ### 7. 動作確認
 
