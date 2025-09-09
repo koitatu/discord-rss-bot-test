@@ -41,3 +41,10 @@ def setup_logging(log_dir="logs", log_file_name="info.log"):
 
 
 logger = setup_logging()
+
+# 必要なメソッドを追加
+def info(message):
+    logger.info(message)
+
+def error(message):
+    logger.error(message)

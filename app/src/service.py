@@ -1,6 +1,6 @@
 import feedparser
 from dataclasses import dataclass
-from typing import List
+from typing import List  # ← この行だけ追加
 import requests
 import json
 from datetime import datetime, timedelta, timezone
@@ -33,9 +33,9 @@ def get_rss(endpoint: str) -> List[RssContent]:
 
 def call_gemini(page_content: str, theme: str, bot_name: str):
     prompt = f"""あなたはRSSを発信する{bot_name}です。{bot_name}のような口調でRSS(テーマ:{theme})の内容を500文字以内で要約してください。改行は含めないでください。
-<info>
+
 {page_content}
-</info>
+
 """
     uri = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={GOOGLE_AI_STUDIO_API_KEY}"
     headers = {"Content-Type": "application/json"}
@@ -46,8 +46,18 @@ def call_gemini(page_content: str, theme: str, bot_name: str):
 
     json_data = response.json()
 
+    # エラーハンドリングを追加
+    if "error" in json_data:
+        print(f"Gemini API エラー: {json_data['error']}")
+        return "API設定エラーが発生しました。"
+    
+    candidates = json_data.get("candidates")
+    if not candidates or len(candidates) == 0:
+        print(f"Gemini APIからの無効なレスポンス: {json_data}")
+        return "Gemini APIから有効なレスポンスを取得できませんでした。"
+
     response_text = (
-        json_data.get("candidates")[0].get("content").get("parts")[0].get("text")
+        candidates[0].get("content").get("parts")[0].get("text")
     )
 
     return response_text
@@ -89,7 +99,7 @@ def call_main(urls: List[str], theme: str, bot_name: str, discord_url: str):
                 res = call_gemini(content, theme, bot_name)
                 break
             except Exception as e:
-                logger.error(f"エラーが発生しました: {e}")
+                print(f"エラーが発生しました: {e}")  # logger.error の代わりに print を使用
                 time.sleep(1)
         else:
             res = "エラーが発生しました。"
