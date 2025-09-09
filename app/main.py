@@ -14,7 +14,8 @@ def handler(event, context):
             "https://zenn.dev/topics/flutter/feed",
         ]
         bot_name = "兄貴"
-        discord_url = "https://discord.com/api/webhooks/1414965406967529472/ZSefU4n3AxdqS5obJhwmiIvpaQfMNvsZ1iWZX3RuVCB4n-oCMStgwtfz6SaM07bsyyu8"
+        # DiscordのWEBHOOKURLを書いてね
+        discord_url = "DISCORD_WEBHOOK_URL_HERE"
         call_main(urls, theme, bot_name, discord_url)
     else:
         logger.info("other")
