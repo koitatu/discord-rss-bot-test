@@ -131,10 +131,19 @@ sls deploy --stage dev
 ### 7. 動作確認
 
 - **手動テスト**  
-
+-- Linux  
 ```
 sls invoke -f app --stage dev --data '{"bot_name":"developer"}'
 ```
+-- Windowsコマンドプロンプト  
+```
+sls invoke -f app --stage dev --data "{\"bot_name\":\"developer\"}"
+```  
+-- Windows PowerShell
+```
+sls invoke -f app --stage dev --data '{"bot_name":"developer"}'
+```
+
 
 - **ログ確認** 
 ```
