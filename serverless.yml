@@ -1,6 +1,12 @@
 service: discord-rss-bot-test
 frameworkVersion: "4"
 
+custom:
+  pythonRequirements:
+    usePipenv: false
+    usePoetry: false
+    dockerizePip: true
+
 plugins:
   - serverless-python-requirements
 
@@ -11,7 +17,7 @@ provider:
   architecture: x86_64
   region: ap-northeast-1
   timeout: 30
-  environment:  # ← この部分を追加
+  environment:
     GOOGLE_AI_STUDIO_API_KEY: ${env:GOOGLE_AI_STUDIO_API_KEY}
   apiGateway:
     binaryMediaTypes:
@@ -21,6 +27,8 @@ provider:
       discord-rss-bot-test:
         path: ./
         platform: linux/amd64
+        buildArgs:
+          BUILDX_NO_DEFAULT_ATTESTATIONS: "1"
 
 functions:
   app:
